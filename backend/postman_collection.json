@@ -32,6 +32,20 @@
     },
     {
       "name": "Auth / Login",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "var jsonData = pm.response.json();",
+              "if (jsonData.access_token) {",
+              "  pm.collectionVariables.set('access_token', jsonData.access_token);",
+              "}"
+            ]
+          }
+        }
+      ],
       "request": {
         "method": "POST",
         "header": [{"key": "Content-Type", "value": "application/json"}],
@@ -85,11 +99,28 @@
       "name": "Rooms / Update (Invalidates cache)",
       "request": {
         "method": "PUT",
-        "header": [{"key": "Content-Type", "value": "application/json"}],
+        "header": [
+          {"key": "Content-Type", "value": "application/json"},
+          {"key": "Authorization", "value": "Bearer {{access_token}}"}
+        ],
         "body": {
           "mode": "raw",
           "raw": "{\n  \"name\": \"Room Demo Actualizada\",\n  \"active\": true\n}"
         },
+        "url": {
+          "raw": "{{base_url}}/rooms/demo-room",
+          "host": ["{{base_url}}"],
+          "path": ["rooms", "demo-room"]
+        }
+      }
+    },
+    {
+      "name": "Rooms / Delete",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {"key": "Authorization", "value": "Bearer {{access_token}}"}
+        ],
         "url": {
           "raw": "{{base_url}}/rooms/demo-room",
           "host": ["{{base_url}}"],

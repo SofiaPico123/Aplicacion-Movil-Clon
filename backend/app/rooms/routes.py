@@ -100,6 +100,7 @@ def process_audio(room_id: str):
 
 
 @rooms_bp.route('/rooms/<room_id>', methods=['PUT'])
+@auth_required
 def put_room(room_id: str):
     payload = request.get_json(silent=True) or {}
     room = Room.query.get(room_id)
@@ -131,6 +132,7 @@ def put_room(room_id: str):
 
 
 @rooms_bp.route('/rooms/<room_id>', methods=['DELETE'])
+@auth_required
 def delete_room(room_id: str):
     room = Room.query.get(room_id)
     if room is None:
