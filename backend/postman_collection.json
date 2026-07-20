@@ -1,0 +1,116 @@
+{
+  "info": {
+    "name": "Flask Rooms API Demo",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://127.0.0.1:5000"
+    },
+    {
+      "key": "access_token",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Auth / Register",
+      "request": {
+        "method": "POST",
+        "header": [{"key": "Content-Type", "value": "application/json"}],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"demo\",\n  \"email\": \"demo@example.com\",\n  \"password\": \"secret123\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/auth/register",
+          "host": ["{{base_url}}"],
+          "path": ["auth", "register"]
+        }
+      }
+    },
+    {
+      "name": "Auth / Login",
+      "request": {
+        "method": "POST",
+        "header": [{"key": "Content-Type", "value": "application/json"}],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"demo\",\n  \"password\": \"secret123\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/auth/login",
+          "host": ["{{base_url}}"],
+          "path": ["auth", "login"]
+        }
+      }
+    },
+    {
+      "name": "Rooms / List (N+1)",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{base_url}}/rooms/list?optimized=false",
+          "host": ["{{base_url}}"],
+          "path": ["rooms", "list"],
+          "query": [{"key": "optimized", "value": "false"}]
+        }
+      }
+    },
+    {
+      "name": "Rooms / List (Optimized)",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{base_url}}/rooms/list?optimized=true",
+          "host": ["{{base_url}}"],
+          "path": ["rooms", "list"],
+          "query": [{"key": "optimized", "value": "true"}]
+        }
+      }
+    },
+    {
+      "name": "Rooms / Get (Cache Miss)",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{base_url}}/rooms/demo-room",
+          "host": ["{{base_url}}"],
+          "path": ["rooms", "demo-room"]
+        }
+      }
+    },
+    {
+      "name": "Rooms / Update (Invalidates cache)",
+      "request": {
+        "method": "PUT",
+        "header": [{"key": "Content-Type", "value": "application/json"}],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Room Demo Actualizada\",\n  \"active\": true\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/rooms/demo-room",
+          "host": ["{{base_url}}"],
+          "path": ["rooms", "demo-room"]
+        }
+      }
+    },
+    {
+      "name": "Rooms / Process Audio",
+      "request": {
+        "method": "POST",
+        "header": [
+          {"key": "Content-Type", "value": "application/json"},
+          {"key": "Authorization", "value": "Bearer {{access_token}}"}
+        ],
+        "url": {
+          "raw": "{{base_url}}/rooms/demo-room/process-audio",
+          "host": ["{{base_url}}"],
+          "path": ["rooms", "demo-room", "process-audio"]
+        }
+      }
+    }
+  ]
+}
